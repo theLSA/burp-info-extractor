@@ -1,5 +1,5 @@
 # burp-info-extractor
-# 概述
+## 概述
 
 提取HTTP响应数据包中的信息，如用户名，密码等
 
@@ -7,7 +7,7 @@
 
 解析json数据使用的是google gson
 
-# 快速开始
+## 快速开始
 
 采用两种提取方式，以二层嵌套json格式的响应数据为例：
 
@@ -37,15 +37,6 @@
 
 注意大小写敏感！
 
-# 反馈
+## 反馈
 
 [issues](https://github.com/theLSA/burp-info-extractor/issues)
-
-
-
-
-
-
-
-
-
