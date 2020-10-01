@@ -39,7 +39,7 @@
 
 # 反馈
 
-https://github.com/theLSA/burp-info-extractor/issues
+[issues](https://github.com/theLSA/burp-info-extractor/issues)
 
 
 
