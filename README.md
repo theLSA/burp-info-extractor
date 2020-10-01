@@ -23,7 +23,7 @@ json格式提取最多支持3层嵌套，可以对付大多数情况了。
 
 ![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie00.png)
 
-测试了如下：
+json格式的数据测试了如下：
 
 一层json嵌套：
 
