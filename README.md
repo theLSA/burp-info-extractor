@@ -1,11 +1,11 @@
 # burp-info-extractor
 ## 概述
 
-提取HTTP响应数据包中的信息，如用户名，密码等
+提取HTTP响应数据包中的信息，如用户名，密码等。
 
 比如一个api（/user/list）返回大量用户名密码，大多数是json格式（jsonarray），就可以使用此工具快速提取信息。
 
-解析json数据使用的是google gson
+解析json数据使用的是google gson。
 
 ## 快速开始
 
