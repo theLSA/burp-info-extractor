@@ -17,7 +17,7 @@
 
 2）正则提取："username":"(.*?)"
 
-![https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie00.png]()
+![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie00.png)
 
 测试了
 
