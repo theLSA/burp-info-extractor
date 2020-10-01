@@ -7,6 +7,8 @@
 
 解析json数据使用的是google gson。
 
+json格式提取最多支持3层嵌套，可以对付大多数情况了。
+
 ## 快速开始
 
 采用两种提取方式，以二层嵌套json格式的响应数据为例：
@@ -19,17 +21,17 @@
 
 ![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie00.png)
 
-测试了
+测试了如下：
 
-一层json嵌套
+一层json嵌套：
 
 [{“username”:”tom”},......]
 
-二层json嵌套
+二层json嵌套：
 
 {“users”:[{“username”:”tom”},......}
 
-三层json嵌套
+三层json嵌套：
 
 {"code":0,"msg":"\u6210\u529f","data":{"current_page":1,"users":[{"unique_id":"9e4147f6e41bb457bcf75227fd646e8e","username":"tom"},......]}}
 
