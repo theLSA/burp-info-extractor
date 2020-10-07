@@ -9,6 +9,8 @@
 
 json格式提取最多支持3层嵌套，可以对付大多数情况了。
 
+关于该插件具体的实现细节，参考[burpsuite插件开发总结](https://www.lsablog.com/networksec/penetration/burpsuite-plugin-development/)
+
 ## 快速开始
 
 支持右键send rsp to BIE，也可以直接粘贴响应数据包/数据到文本框。
