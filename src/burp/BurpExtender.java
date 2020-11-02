@@ -555,7 +555,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                 		
                 		if (jrb1.isSelected()) {
                 			String regexResult = null;
-                			rspBodyContent = rspBodyContent.trim();
+                			rspBodyContent = rspBody1.trim();
                 			String regexContent = regexField.getText(); 
                 			
                 			Pattern p = Pattern.compile(regexContent);
