@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,6 +72,8 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 	private JButton cleanExtractResultButton;
 	private JButton exportExtractResultButton;
 	
+	private JButton removeDuplicateResultButton;
+	
 	
 	private IHttpRequestResponse[] selectedItems;
     
@@ -100,6 +103,11 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+            	
+
+        		List<String> resultList = new ArrayList<>();
+        		
+        		List<String> removeDuplicateResultList = new ArrayList<>();
 
                 mainJPanel = new JPanel();
                 mainJPanel.setLayout(null);
@@ -126,10 +134,11 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
         		regexField = new JTextField("\"regex\":\"(.*?)\"");
         		
         		
-        		cleanRspBodyButton = new JButton("cleanRspBody");
+        		cleanRspBodyButton = new JButton("cleanSourceData");
         		cleanExtractResultButton = new JButton("clean");
         		exportExtractResultButton = new JButton("export");
         		
+        		removeDuplicateResultButton = new JButton("removeDuplicate");
         		
         		
         		/*
@@ -189,6 +198,41 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 						}
 					}
 				});
+            	
+            	removeDuplicateResultButton.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						
+						if (resultList.isEmpty()) {
+							stdout.println("result list is empty!");
+							
+
+							JOptionPane.showMessageDialog(null,"result list is empty!");
+							
+							return;
+						}
+						
+						infoExtractResultArea.setText(null);
+						
+						List<String> returnRemoveDuplicateResultList = new ArrayList<>();
+						
+						returnRemoveDuplicateResultList = removeDuplicateResult(resultList, removeDuplicateResultList);
+						
+						for (String returnRemoveDuplicateResultStr : returnRemoveDuplicateResultList) {
+							infoExtractResultArea.append(returnRemoveDuplicateResultStr+"\n");
+							
+							stdout.println("remove duplicate result str:"+returnRemoveDuplicateResultStr+"\n");
+					    }
+						
+						resultList.clear();
+						removeDuplicateResultList.clear();
+						returnRemoveDuplicateResultList.clear();
+					
+					}
+				});
+            	
         		
         		mainJPanel.add(jsp0);
         		mainJPanel.add(jsp1);
@@ -201,6 +245,8 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
         		mainJPanel.add(cleanRspBodyButton);
         		mainJPanel.add(cleanExtractResultButton);
         		mainJPanel.add(exportExtractResultButton);
+        		
+        		mainJPanel.add(removeDuplicateResultButton);
         		
         		mainJPanel.add(regexField);
         		
@@ -217,9 +263,11 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
         		
         		extractButton.setBounds(750, 200, 80, 30);
         		
-        		cleanRspBodyButton.setBounds(30, 650, 120, 30);
+        		cleanRspBodyButton.setBounds(30, 650, 150, 30);
         		cleanExtractResultButton.setBounds(900, 650, 100, 30);
         		exportExtractResultButton.setBounds(1000, 650, 100, 30);
+        		
+        		removeDuplicateResultButton.setBounds(900, 620, 200, 30);
         		
         		regexField.setBounds(650, 300, 200, 30);
 
@@ -246,6 +294,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                         }
               
                         String rspBodyContent = null;
+                        
                 		
                         //-------------------------------------json format extractor--------------------------------------------
                         
@@ -383,7 +432,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 
                 						//stdout.println("data1: "+subJsonObject.get("userId").getAsString());
                 						infoExtractResultArea.append(oneNestJsonValueString+'\n');
-
+                						resultList.add(oneNestJsonValueString);
                 					}
                 					
                 					
@@ -440,7 +489,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 
                     						//stdout.println("data1: "+subJsonObject.get("userId").getAsString());
                     						infoExtractResultArea.append(twoNestJsonValueString+'\n');
-
+                    						resultList.add(twoNestJsonValueString);
                     					}
 
                     					stdout.println("JSON result total:"+oneNestJsonValueArray.size());
@@ -523,7 +572,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 
                         						//stdout.println("data1: "+subJsonObject.get("userId").getAsString());
                         						infoExtractResultArea.append(threeNestJsonValue+'\n');
-
+                        						resultList.add(threeNestJsonValue);
                         					}
 
                         					stdout.println("JSON result total:"+twoNestJsonValueArray.size());
@@ -569,6 +618,8 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                 				stdout.println(regexResult);
                 				
                 				infoExtractResultArea.append(regexResult+'\n');
+                				
+                				resultList.add(regexResult);
                 				
                 			}
                 			stdout.println("MISC result total: " + regexResultCount);
@@ -673,6 +724,15 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 		JsonObject jsonObject = (JsonObject)jsonParser.parse(rspBodyContent);
 		
 		return jsonObject;
+	}
+	
+	public List<String> removeDuplicateResult(List<String> resultList,List<String> removeDuplicateResultList){
+		LinkedHashSet<String> lhset = new LinkedHashSet<String>(resultList.size());
+	    lhset.addAll(resultList);
+	    
+	    removeDuplicateResultList.addAll(lhset);
+	    
+	    return removeDuplicateResultList;
 	}
 	
 }
