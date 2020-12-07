@@ -1,25 +1,23 @@
 # burp-info-extractor
 ## 概述
 
-快速提取数据中有价值的信息，如HTTP响应数据包中的用户名，密码等。
+快速提取数据中有价值的信息。
 
-比如一个api（/user/list）返回大量用户名/密码，大多数是json格式（jsonarray），就可以使用此工具快速提取信息。
-
-解析json数据使用的是google gson。
-
-json格式提取最多支持3层嵌套，可以对付大多数情况了。
+比如一个API（/user/list）返回大量用户名/密码，就可以使用此burpsuite插件快速提取。
 
 关于该插件的实现细节，参考[burpsuite插件开发总结](https://www.lsablog.com/networksec/penetration/burpsuite-plugin-development/)
 
 ## 快速开始
 
-支持右键send rsp to BIE，也可以直接粘贴响应数据包/数据到文本框。
+支持右键send rsp to BIE直接发送HTTP响应包到本插件，也可以直接粘贴响应数据包/数据到插件文本框。
 
 采用两种提取方式，以二层嵌套json格式的数据为例：
 
 {“users”:[{“username”:”tom”},......}
 
 1）json格式提取：users-username
+
+json格式提取使用了google gson解析json数据，最多支持3层json嵌套，可以对付大多数情况了。
 
 2）正则提取："username":"(.*?)"
 
