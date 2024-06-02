@@ -19,9 +19,9 @@ json格式提取使用了google gson解析json数据，最多支持3层json嵌�
 
 ![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie03.png)
 
-2）正则提取："username":"(.*?)"
-
 ![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie00.png)
+
+2）正则提取："username":"(.*?)"
 
 ![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie02.png)
 
