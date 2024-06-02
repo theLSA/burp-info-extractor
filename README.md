@@ -9,19 +9,21 @@
 
 ## 快速开始
 
-支持右键send rsp to BIE直接发送HTTP响应包到本插件，也可以直接粘贴响应数据包/数据到插件文本框。
+支持右键send rsp to BIE直接发送HTTP响应包到本插件，也可以直接粘贴响应包或数据到插件文本框。
 
-采用两种提取方式，以二层嵌套json格式的数据为例：
-
-{“users”:[{“username”:”tom”},......}
+采用两种提取方式：
 
 1）json格式提取：users-username
 
 json格式提取使用了google gson解析json数据，最多支持3层json嵌套，可以对付大多数情况了。
 
+![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie03.png)
+
 2）正则提取："username":"(.*?)"
 
 ![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie00.png)
+
+![](https://github.com/theLSA/burp-info-extractor/raw/master/demo/bie02.png)
 
 json格式的数据测试了如下：
 

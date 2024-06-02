@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -67,16 +68,16 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 	
 	private JTextField regexField; 
 	
-	
 	private JButton cleanRspBodyButton;
 	private JButton cleanExtractResultButton;
 	private JButton exportExtractResultButton;
 	
 	private JButton removeDuplicateResultButton;
 	
-	
 	private IHttpRequestResponse[] selectedItems;
     
+	//sb.append(line).append(System.lineSeparator());
+	public static final String LINE_SPLIT_MARK = System.getProperty("line.separator");
     
 
     @Override
@@ -176,22 +177,37 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 						int returnval = fc.showSaveDialog(null);
 						if(0==returnval) {
 							File savefile = fc.getSelectedFile();
-							String[] sp = s.split("[\\n]");
-						
+							//String[] sp = s.split("[\LINE_SPLIT_MARK]");
+							/*
 							try {
 								FileWriter writeout = new FileWriter(savefile);
 								for(int i=0;i<sp.length;i++) {
 									writeout.write(sp[i]);
-				            		writeout.write("\n");
+				            		writeout.write(LINE_SPLIT_MARK);
 				            	}
 								
 								writeout.close();
 								
+							
+							
 								JOptionPane.showMessageDialog(null,"exported successfully!");
 								
 							}catch(IOException ex) {
 								ex.printStackTrace();
 							}
+							*/
+							StringBuilder sb = new StringBuilder();
+							sb.append(s);
+							String resultContent = sb.toString();
+							
+							try (BufferedWriter exportWriter = new BufferedWriter(new FileWriter(savefile))) {
+					            exportWriter.write(resultContent);
+					            System.out.println("resultContent write to file：" + savefile);
+					        } catch (IOException e0) {
+					            System.err.println("resultContent write to file error：" + e0.getMessage());
+					        }
+							
+							JOptionPane.showMessageDialog(null,"exported successfully!");
 							
 						}else {
 							return;
@@ -221,9 +237,9 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
 						returnRemoveDuplicateResultList = removeDuplicateResult(resultList, removeDuplicateResultList);
 						
 						for (String returnRemoveDuplicateResultStr : returnRemoveDuplicateResultList) {
-							infoExtractResultArea.append(returnRemoveDuplicateResultStr+"\n");
+							infoExtractResultArea.append(returnRemoveDuplicateResultStr+LINE_SPLIT_MARK);
 							
-							stdout.println("remove duplicate result str:"+returnRemoveDuplicateResultStr+"\n");
+							stdout.println("remove duplicate result str:"+returnRemoveDuplicateResultStr+LINE_SPLIT_MARK);
 					    }
 						
 						resultList.clear();
@@ -302,7 +318,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                 			
                 			
                             /*
-                            int getRspBodyContentByWrapIndex = rspBody1.indexOf("\n\n");
+                            int getRspBodyContentByWrapIndex = rspBody1.indexOf("LINE_SPLIT_MARKLINE_SPLIT_MARK");
                             
                             stdout.println("getRspBodyContentByWrapIndex:" + getRspBodyContentByWrapIndex);
                             
@@ -311,7 +327,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                             	stdout.println("rspBodyContent:" + rspBodyContent);
                             }
                             else {
-                            	rspBodyContent = rspBody1.substring(rspBody1.indexOf("\n\n")+2);
+                            	rspBodyContent = rspBody1.substring(rspBody1.indexOf("LINE_SPLIT_MARKLINE_SPLIT_MARK")+2);
                             	stdout.println("rspBodyContent:" + rspBodyContent);
                             }
                             */
@@ -431,7 +447,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                 						//jsonValueList.add(jsonValue);
 
                 						//stdout.println("data1: "+subJsonObject.get("userId").getAsString());
-                						infoExtractResultArea.append(oneNestJsonValueString+'\n');
+                						infoExtractResultArea.append(oneNestJsonValueString+LINE_SPLIT_MARK);
                 						resultList.add(oneNestJsonValueString);
                 					}
                 					
@@ -447,7 +463,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                 					String oneNestJsonValueString = oneNestJsonObject.get(oneNestJsonKey).getAsString();
                 					
                 					stdout.println("data: "+oneNestJsonValueString);
-                					infoExtractResultArea.append(oneNestJsonValueString+'\n');
+                					infoExtractResultArea.append(oneNestJsonValueString+LINE_SPLIT_MARK);
                 				}
                 			}
                 				
@@ -488,7 +504,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                     						//jsonValueList.add(jsonValue);
 
                     						//stdout.println("data1: "+subJsonObject.get("userId").getAsString());
-                    						infoExtractResultArea.append(twoNestJsonValueString+'\n');
+                    						infoExtractResultArea.append(twoNestJsonValueString+LINE_SPLIT_MARK);
                     						resultList.add(twoNestJsonValueString);
                     					}
 
@@ -503,7 +519,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                 						JsonObject oneNestJsonValueObject = oneNestJsonObject.get(oneNestJsonKey).getAsJsonObject();
                 						String twoNestJsonValueString = oneNestJsonValueObject.get(twoNestJsonKey).getAsString();
             							stdout.println("data: "+twoNestJsonValueString);
-                    					infoExtractResultArea.append(twoNestJsonValueString+'\n');
+                    					infoExtractResultArea.append(twoNestJsonValueString+LINE_SPLIT_MARK);
                 						/*
                 						JsonElement twoNestJsonValueElement = oneNestJsonValueObject.get(twoNestJsonKey);
                 						
@@ -511,7 +527,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                 							JsonObject twoNestJsonValueObject = oneNestJsonValueObject.get(twoNestJsonKey).getAsJsonObject();
                 							String twoNestJsonValueString = twoNestJsonValueObject.get(twoNestJsonKey).getAsString();
                 							stdout.println("data: "+twoNestJsonValueString);
-                        					infoExtractResultArea.append(twoNestJsonValueString+'\n');
+                        					infoExtractResultArea.append(twoNestJsonValueString+LINE_SPLIT_MARK);
                 						}
                 						*/
                 						
@@ -571,7 +587,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                         						//jsonValueList.add(jsonValue);
 
                         						//stdout.println("data1: "+subJsonObject.get("userId").getAsString());
-                        						infoExtractResultArea.append(threeNestJsonValue+'\n');
+                        						infoExtractResultArea.append(threeNestJsonValue+LINE_SPLIT_MARK);
                         						resultList.add(threeNestJsonValue);
                         					}
 
@@ -617,7 +633,7 @@ public class BurpExtender implements IBurpExtender, ITab, IContextMenuFactory, A
                 				regexResult = m.group(1);
                 				stdout.println(regexResult);
                 				
-                				infoExtractResultArea.append(regexResult+'\n');
+                				infoExtractResultArea.append(regexResult+LINE_SPLIT_MARK);
                 				
                 				resultList.add(regexResult);
                 				
